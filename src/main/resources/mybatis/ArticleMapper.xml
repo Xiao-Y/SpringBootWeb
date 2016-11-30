@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.billow.mapper.ArticleMapper">
+
+	<resultMap type="com.billow.model.Article" id="result_base">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="userid" property="userid" />
+	</resultMap>
+
+	<resultMap type="com.billow.model.Article" id="result"
+		extends="result_base">
+		<collection property="user" javaType="com.billow.model.User"
+			ofType="com.billow.model.User" column="id"
+			select="com.billow.mapper.UserMapper.findUserById" />
+	</resultMap>
+
+	<sql id="conmmonSql">
+		a.title,
+		a.content,
+	</sql>
+
+	<select id="findArticleByUserid" resultMap="result_base"
+		parameterType="int">
+		select
+		a.id,
+		<include refid="conmmonSql" />
+		a.userid
+		from article a
+		where a.userid = #{id};
+	</select>
+
+	<select id="findArticleById" resultMap="result" parameterType="int">
+		select
+		a.id as articeId,
+		<include refid="conmmonSql" />
+		a.userid as id
+		from article a
+		where a.id = #{id};
+	</select>
+
+</mapper>

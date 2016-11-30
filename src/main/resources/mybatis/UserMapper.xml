@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.billow.mapper.UserMapper">
+
+	<resultMap type="com.billow.model.User" id="result_base">
+		<id column="id" property="id" />
+		<result column="userName" property="userName" />
+		<result column="age" property="age" />
+	</resultMap>
+
+	<resultMap type="com.billow.model.User" id="result" extends="result_base">
+		<collection property="articles" javaType="ArrayList"
+			column="userid" ofType="com.billow.model.Article"
+			select="com.billow.mapper.ArticleMapper.findArticleByUserid" />
+	</resultMap>
+
+	<!-- 关联查询：关联字段user中的别名userid要与article中的userid相同 -->
+	<select id="findUserList" resultMap="result">
+		select u.id as
+		userid,u.username,u.age from t_user u;
+	</select>
+
+	<select id="findUserById" resultMap="result_base">
+		select r.*
+		from t_user r
+		where r.id = #{id};
+	</select>
+
+	<insert id="saveUserInfo" parameterType="com.billow.model.User">
+		insert into
+		t_user(username, age) values(#{userName}, #{age})
+	</insert>
+</mapper>
