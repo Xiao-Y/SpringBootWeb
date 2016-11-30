@@ -7,8 +7,11 @@
 	<table>
 		<c:forEach var="user" items="${users }">
 		<tr>
+			<td><input type="checkbox" value="${user.userId }"></td>
 			<td>${user.userId }</td>
-			<td>${user.userName }</td>
+			<td>
+				<a href="/user/prepareForUserUpdate/${user.userId }">${user.userName }</a>
+			</td>
 			<td>${user.age }</td>
 		</tr>
 		</c:forEach>

@@ -6,7 +6,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.billow.model.User;
@@ -60,6 +62,20 @@ public class UserController {
 	public String submitUserInfo(User user) {
 		userService.saveUserInfo(user);
 		System.out.println(user);
+		return "success";
+	}
+
+	@RequestMapping(value = "/prepareForUserUpdate/{userId}", method = RequestMethod.GET)
+	public String prepareForUserUpdate(@PathVariable Integer userId, Model model) {
+		User user = userService.findUserById(userId);
+		model.addAttribute("user", user);
+		model.addAttribute("update","update");
+		return "user/prepareForUserAdd";
+	}
+
+	@RequestMapping("/updateUserInfo")
+	public String updateUserInfo(User user) {
+		userService.updateUserInfo(user);
 		return "success";
 	}
 }

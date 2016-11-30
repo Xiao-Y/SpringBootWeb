@@ -30,4 +30,8 @@
 		insert into
 		t_user(username, age) values(#{userName}, #{age});
 	</insert>
+	
+	<update id="updateUserInfo" parameterType="com.billow.model.User">
+		update t_user r set r.userName = #{userName},r.age = #{age} where r.userId = #{userId}; 
+	</update>
 </mapper>

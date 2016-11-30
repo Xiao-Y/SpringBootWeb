@@ -12,6 +12,8 @@ public interface UserMapper {
 
 	public void saveUserInfo(User user);
 
+	public void updateUserInfo(User user);
+
 	/**
 	 * 查询某个人发表的所有文章
 	 * 
