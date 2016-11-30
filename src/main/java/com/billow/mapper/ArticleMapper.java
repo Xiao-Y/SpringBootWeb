@@ -6,7 +6,7 @@ import com.billow.model.Article;
 
 public interface ArticleMapper {
 
-	public Article findArticleById(int id);
+	public Article findArticleById(int articleId);
 
-	public List<Article> findArticleByUserid();
+	public List<Article> findArticleByUserId();
 }

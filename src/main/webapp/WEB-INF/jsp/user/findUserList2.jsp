@@ -7,7 +7,7 @@
 	<table>
 		<c:forEach var="user" items="${users }">
 		<tr>
-			<td>${user.id }</td>
+			<td>${user.userId }</td>
 			<td>${user.userName }</td>
 			<td>${user.age }</td>
 		</tr>

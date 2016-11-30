@@ -29,7 +29,7 @@ public class UserController {
 	private UserService userService;
 
 	/*
-	 * http://localhost:8080/findUserList
+	 * http://localhost:8080/user/findUserList
 	 */
 	@RequestMapping("/findUserList")
 	@ResponseBody

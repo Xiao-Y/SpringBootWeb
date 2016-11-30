@@ -6,7 +6,7 @@ import com.billow.model.User;
 
 public interface UserMapper {
 
-	public User findUserById(int id);
+	public User findUserById(int userId);
 
 	public List<User> findUserList();
 

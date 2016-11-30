@@ -9,18 +9,18 @@ package com.billow.model;
  */
 public class Article {
 
-	private int id;
-	private int userid;
+	private int articleId;
+	private int userId;
 	private String title;
 	private String content;
 	private User user;
 
-	public int getId() {
-		return id;
+	public int getArticleId() {
+		return articleId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setArticleId(int articleId) {
+		this.articleId = articleId;
 	}
 
 	public String getTitle() {
@@ -39,12 +39,12 @@ public class Article {
 		this.content = content;
 	}
 
-	public int getUserid() {
-		return userid;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setUserid(int userid) {
-		this.userid = userid;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public User getUser() {
@@ -57,6 +57,6 @@ public class Article {
 
 	@Override
 	public String toString() {
-		return "Article [id=" + id + ", userid=" + userid + ", title=" + title + ", content=" + content + ", user=" + user + "]";
+		return "Article [articleId=" + articleId + ", userId=" + userId + ", title=" + title + ", content=" + content + ", user=" + user + "]";
 	}
 }
