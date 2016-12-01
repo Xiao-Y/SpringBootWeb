@@ -6,6 +6,7 @@
 		<id column="userId" property="userId" />
 		<result column="userName" property="userName" />
 		<result column="age" property="age" />
+		<result column="phoneNumber" property="phoneNumber" />
 	</resultMap>
 
 	<resultMap type="com.billow.model.User" id="result" extends="result_base">
@@ -17,7 +18,7 @@
 	<!-- 关联查询：关联字段user中的别名userid要与article中的userid相同 -->
 	<select id="findUserList" resultMap="result">
 		select
-		u.userId,u.username,u.age from t_user u;
+		u.userId,u.username,u.age,u.phoneNumber from t_user u;
 	</select>
 
 	<select id="findUserById" resultMap="result_base">
@@ -26,12 +27,18 @@
 		where r.userId = #{userid};
 	</select>
 
-	<insert id="saveUserInfo" parameterType="com.billow.model.User">
+	<!-- useGeneratedKeys设置 为"true"表明要MyBatis获取由数据库自动生成的主 键； keyProperty="userId"指定把获取到的主键值注入到User的userId属性 -->
+	<insert id="saveUserInfo" parameterType="com.billow.model.User"
+		useGeneratedKeys="true" keyProperty="userId">
 		insert into
-		t_user(username, age) values(#{userName}, #{age});
+		t_user(username,
+		age,phoneNumber)
+		values(#{userName}, #{age}, #{phoneNumber});
 	</insert>
-	
+
 	<update id="updateUserInfo" parameterType="com.billow.model.User">
-		update t_user r set r.userName = #{userName},r.age = #{age} where r.userId = #{userId}; 
+		update t_user r set
+		r.userName = #{userName},r.age = #{age},r.phoneNumber = #{phoneNumber}
+		where r.userId = #{userId};
 	</update>
 </mapper>

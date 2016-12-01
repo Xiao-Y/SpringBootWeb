@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.List;
+
 public class StringUtils {
 
 	/**
@@ -25,5 +27,26 @@ public class StringUtils {
 			length--;
 		}
 		return str.substring(0, length);
+	}
+
+	public static boolean isNotEmpty(String str) {
+		if (str != null && !"".equals(str)) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isNotEmpty(List<Object> list) {
+		if (list != null && list.size() > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isNotEmpty(String[] items) {
+		if (items != null && items.length > 0) {
+			return true;
+		}
+		return false;
 	}
 }
