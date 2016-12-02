@@ -36,7 +36,8 @@ public class StringUtils {
 		return false;
 	}
 
-	public static boolean isNotEmpty(List<Object> list) {
+	@SuppressWarnings("rawtypes")
+	public static boolean isNotEmpty(List list) {
 		if (list != null && list.size() > 0) {
 			return true;
 		}

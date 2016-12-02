@@ -40,4 +40,11 @@
 		where a.articeId = #{articeId};
 	</select>
 
+	<delete id="deleteUserByArticleIds" parameterType="int">
+		delete from article r where r.articleId in
+		<foreach collection="array" open="(" close=")" separator=","
+			item="articleId">
+			#{articleId}
+		</foreach>
+	</delete>
 </mapper>

@@ -9,4 +9,6 @@ public interface ArticleMapper {
 	public Article findArticleById(int articleId);
 
 	public List<Article> findArticleByUserId();
+
+	public void deleteUserByArticleIds(Integer[] articleIds);
 }

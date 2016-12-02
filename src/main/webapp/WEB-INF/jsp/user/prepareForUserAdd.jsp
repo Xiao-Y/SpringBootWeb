@@ -16,6 +16,7 @@
 				年龄：<input type="text" name="age" value="${user.age }"><sf:errors path="age"/><br>
 				联系方式：<input type="text" name="phoneNumber" value="${user.phoneNumber }"><sf:errors path="phoneNumber"/><br>
 				<input type="submit" value="提交">
+				<!-- 显示所有的错误信息 -->
 				<p><sf:errors path="*"/></p>
 			</sf:form>
 		</c:when>

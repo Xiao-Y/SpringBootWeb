@@ -9,10 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import utils.ToolsUtils;
 
 import com.billow.model.User;
 import com.billow.service.UserService;
@@ -36,7 +40,7 @@ public class UserController {
 	@RequestMapping("/findUserList2")
 	@ResponseBody
 	public List<User> findUserList2() {
-		List<User> users = userService.findUserList();
+		List<User> users = userService.findUserList(null);
 		for (User user : users) {
 			logger.info(user);
 		}
@@ -45,12 +49,12 @@ public class UserController {
 
 	@RequestMapping("/findUserList")
 	public String findUserList(Model model) {
-		List<User> users = userService.findUserList();
+		List<User> users = userService.findUserList(null);
 		for (User user : users) {
 			logger.info(user);
 		}
 		model.addAttribute("users", users);
-		return "user/findUserList2";
+		return "user/findUserList";
 	}
 
 	@RequestMapping("/prepareForUserAdd")
@@ -64,11 +68,10 @@ public class UserController {
 	public String submitUserInfo(@Valid User user, BindingResult result, Model model) {
 		// @Valid 表示按照在实体上标记的注解验证参数
 		if (result.hasErrors()) {
-			// List<ObjectError> list = result.getAllErrors();
-			// for (ObjectError error : list) {
-			// System.out.println(error.getCode() + "---" + error.getArguments()
-			// + "---" + error.getDefaultMessage());
-			// }
+			List<ObjectError> list = result.getAllErrors();
+			for (ObjectError error : list) {
+				System.out.println(error.getCode() + "---" + error.getArguments() + "---" + error.getDefaultMessage());
+			}
 			return "user/prepareForUserAdd";
 		}
 		userService.saveUserInfo(user);
@@ -92,5 +95,22 @@ public class UserController {
 		}
 		userService.updateUserInfo(user);
 		return "success";
+	}
+
+	@RequestMapping("/deleteUserByUserId/{userId}")
+	public String deleteUserByUserId(@PathVariable Integer userId) {
+		userService.deleteUserByUserId(userId);
+		return "redirect:findUserList";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/searchUser")
+	public List<String> searchUser(@RequestParam("userName") String userName) {
+		System.out.println(userName);
+		User user = new User();
+		user.setUserName(userName);
+		List<User> users = userService.findUserList(user);
+		List<String> userNames = ToolsUtils.getListByFieldValue(users, "userName");
+		return userNames;
 	}
 }

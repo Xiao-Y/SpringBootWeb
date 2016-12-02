@@ -16,9 +16,14 @@
 	</resultMap>
 
 	<!-- 关联查询：关联字段user中的别名userid要与article中的userid相同 -->
-	<select id="findUserList" resultMap="result">
+	<select id="findUserList" resultMap="result" parameterType="com.billow.model.User">
 		select
-		u.userId,u.username,u.age,u.phoneNumber from t_user u;
+		u.userId,u.userName,u.age,u.phoneNumber from t_user u
+		<where>
+			<if test="userName != null">
+				u.userName like CONCAT('%','${userName}','%')
+			</if>
+		</where>
 	</select>
 
 	<select id="findUserById" resultMap="result_base">
@@ -41,4 +46,18 @@
 		r.userName = #{userName},r.age = #{age},r.phoneNumber = #{phoneNumber}
 		where r.userId = #{userId};
 	</update>
+
+	<delete id="deleteUserByUserId" parameterType="int">
+		delete from t_user
+		where r.userId = #{userId};
+	</delete>
+
+	<delete id="deleteUserByUserIds" parameterType="int">
+		delete from t_user
+		where r.userId in
+		<foreach collection="array" open="(" close=")" separator=","
+			item="userId">
+			#{userId};
+		</foreach>
+	</delete>
 </mapper>

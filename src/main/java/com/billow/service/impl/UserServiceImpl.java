@@ -5,7 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import utils.StringUtils;
+import utils.ToolsUtils;
+
+import com.billow.mapper.ArticleMapper;
 import com.billow.mapper.UserMapper;
+import com.billow.model.Article;
 import com.billow.model.User;
 import com.billow.service.UserService;
 
@@ -14,10 +19,12 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserMapper userMapper;
+	@Autowired
+	private ArticleMapper articleMapper;
 
 	@Override
-	public List<User> findUserList() {
-		return userMapper.findUserList();
+	public List<User> findUserList(User user) {
+		return userMapper.findUserList(user);
 	}
 
 	@Override
@@ -34,5 +41,20 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User findUserById(int id) {
 		return userMapper.findUserById(id);
+	}
+
+	@Override
+	public void deleteUserByUserId(Integer userId) {
+		User user = userMapper.findUserById(userId);
+		List<Article> articles = user.getArticles();
+		if (StringUtils.isNotEmpty(articles)) {
+			List<Integer> listObject = ToolsUtils.getListByFieldValue(articles, "articleId");
+			if (StringUtils.isNotEmpty(listObject)) {
+				Integer[] articleIds = new Integer[listObject.size()];
+				listObject.toArray(articleIds);
+				articleMapper.deleteUserByArticleIds(articleIds);
+			}
+		}
+		userMapper.deleteUserByUserId(userId);
 	}
 }
