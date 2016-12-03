@@ -89,15 +89,12 @@ public class UserController {
 	public String prepareForUserUpdate(@PathVariable Integer userId, Model model) {
 		User user = userService.findUserById(userId);
 		model.addAttribute("user", user);
-		model.addAttribute("update", "update");
 		return "user/prepareForUserAdd";
 	}
 
-	@RequestMapping("/updateUserInfo")
+	@RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
 	public String updateUserInfo(@Valid User user, BindingResult result, Model model) {
 		if (result.hasErrors()) {
-			// 标识是更新时校验的错误，对隐藏域中userId赋值
-			model.addAttribute("update", "update");
 			return "user/prepareForUserAdd";
 		}
 		userService.updateUserInfo(user);

@@ -14,7 +14,7 @@ import com.billow.annotation.validator.PhoneNumber;
 
 public class User extends BaseModel {
 
-	private int userId;
+	private Integer userId;
 
 	@NotEmpty(message = "姓名不能为空")
 	@Length(min = 5, message = "用户名不能少于5")
@@ -31,11 +31,11 @@ public class User extends BaseModel {
 
 	private List<Article> articles;
 
-	public int getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
