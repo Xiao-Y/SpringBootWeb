@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.billow.annotation.validator.CannotContainSpaces;
 import com.billow.annotation.validator.PhoneNumber;
 
-public class User {
+public class User extends BaseModel {
 
 	private int userId;
 
@@ -73,6 +73,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", age=" + age + ", phoneNumber=" + phoneNumber + ", articles=" + articles + "]";
+		return "User [userId=" + userId + ", userName=" + userName + ", age=" + age + ", phoneNumber=" + phoneNumber
+				+ ", articles=" + articles + "]" + super.toString();
 	}
 }

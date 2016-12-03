@@ -25,6 +25,14 @@
 			</if>
 		</where>
 	</select>
+	<select id="findUserCount" resultType="int" parameterType="com.billow.model.User">
+		select count(*) from t_user u
+		<where>
+			<if test="userName != null">
+				u.userName like CONCAT('%','${userName}','%')
+			</if>
+		</where>
+	</select>
 
 	<select id="findUserById" resultMap="result_base">
 		select r.*

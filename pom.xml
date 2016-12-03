@@ -63,6 +63,12 @@
 			<artifactId>swagger-springmvc</artifactId>
 			<version>0.9.5</version>
 		</dependency>
+		<!-- mybatis 分页插件 -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper</artifactId>
+			<version>4.1.6</version>
+		</dependency>
 		<!-- poi -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>

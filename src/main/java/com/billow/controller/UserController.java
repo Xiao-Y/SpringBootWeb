@@ -2,6 +2,7 @@ package com.billow.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -20,6 +21,8 @@ import utils.ToolsUtils;
 
 import com.billow.model.User;
 import com.billow.service.UserService;
+import com.billow.utils.RequestUtils;
+import com.github.pagehelper.PageHelper;
 
 /**
  * 返回JSON
@@ -48,11 +51,15 @@ public class UserController {
 	}
 
 	@RequestMapping("/findUserList")
-	public String findUserList(Model model) {
+	public String findUserList(Model model, User user, HttpServletRequest request) {
+		Integer pageSize = RequestUtils.getPageSize(request);
+		Integer targetPage = RequestUtils.getTargetPage(request);
+		PageHelper.startPage(targetPage, pageSize);
+
 		List<User> users = userService.findUserList(null);
-		for (User user : users) {
-			logger.info(user);
-		}
+		int count = userService.findUserCount(null);
+		user.setRecordCount(count);
+		model.addAttribute("userModel", user);
 		model.addAttribute("users", users);
 		return "user/findUserList";
 	}

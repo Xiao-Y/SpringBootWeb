@@ -15,4 +15,6 @@ public interface UserService {
 	public User findUserById(int id);
 
 	public void deleteUserByUserId(Integer userId);
+
+	public int findUserCount(User user);
 }

@@ -1,17 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!doctype html>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ include file="/static/taglib.jsp"%> 
 <html>
 <head>
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<link rel="stylesheet"
-	href="http://jqueryui.com/resources/demos/style.css">
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-<script>
+<jsp:include page="/static/public.jsp"/>
+<script type="text/javascript">
 	$(function() {
 		$("#userName").on("keyup",function(){
 			var userName = $("#userName").val();
@@ -69,5 +62,8 @@
 			</tr>
 		</c:forEach>
 	</table>
+	 <!-- 分页start -->
+     <x:pager pageSize="${userModel.pageSize }" pageNo="${userModel.pageNo }" recordCount="${userModel.recordCount }" url="/user/findUserList" />
+     <!-- 分页end -->
 </body>
 </html>

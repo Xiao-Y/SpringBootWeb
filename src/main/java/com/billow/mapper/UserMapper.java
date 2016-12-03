@@ -18,6 +18,8 @@ public interface UserMapper {
 
 	public void deleteUserByUserIds(Integer[] userId);
 
+	public int findUserCount(User user);
+
 	/**
 	 * 查询某个人发表的所有文章
 	 * 
