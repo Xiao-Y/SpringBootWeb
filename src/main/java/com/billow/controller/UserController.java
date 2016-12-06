@@ -12,9 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import utils.ToolsUtils;
@@ -77,12 +77,12 @@ public class UserController {
 		if (result.hasErrors()) {
 			List<ObjectError> list = result.getAllErrors();
 			for (ObjectError error : list) {
-				System.out.println(error.getCode() + "---" + error.getArguments() + "---" + error.getDefaultMessage());
+				logger.info(error.getCode() + "---" + error.getArguments() + "---" + error.getDefaultMessage());
 			}
 			return "user/prepareForUserAdd";
 		}
 		userService.saveUserInfo(user);
-		return "success";
+		return "redirect:findUserList";
 	}
 
 	@RequestMapping(value = "/prepareForUserUpdate/{userId}", method = RequestMethod.GET)
@@ -98,7 +98,7 @@ public class UserController {
 			return "user/prepareForUserAdd";
 		}
 		userService.updateUserInfo(user);
-		return "success";
+		return "redirect:findUserList";
 	}
 
 	@RequestMapping("/deleteUserByUserId/{userId}")
@@ -109,10 +109,9 @@ public class UserController {
 
 	@ResponseBody
 	@RequestMapping(value = "/searchUser")
-	public List<String> searchUser(@RequestParam("userName") String userName) {
-		System.out.println(userName);
-		User user = new User();
-		user.setUserName(userName);
+	public List<String> searchUser(@RequestBody User user) {
+		String userName = user.getUserName();
+		logger.info(userName);
 		List<User> users = userService.findUserList(user);
 		List<String> userNames = ToolsUtils.getListByFieldValue(users, "userName");
 		return userNames;

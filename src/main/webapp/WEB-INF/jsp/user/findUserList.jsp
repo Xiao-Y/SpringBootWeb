@@ -75,34 +75,70 @@
 </body>
 <script type="text/javascript">
 $(function(){
-	$("#userName").on("keyup",function(){
+	/* $("#userName").on("keyup",function(){
 		var userName = $("#userName").val();
+		var user = {"userName" : userName};
 		$.ajax({
 			type : "POST",
 			contentType : "application/json",
-			url : "/user/searchUser?userName=" + userName,
-			data : {
-				userName : userName
-			},
+			url : "/user/searchUser",
+			data : JSON.stringify(user),
 			dataType : "json",
-			success : function(msg) {
-				if(msg != ''){
-					var datas = eval('(' + msg + ')');
-					console.info(datas);
-					$("#userName").autocomplete(datas, {
-						formatItem: function (row, i, max) {
-							console.info(row);
-							return "<table width='400px'><tr><td align='left'>" + row + "</td></tr></table>";
+			success : function(data) {
+				if(data != ''){
+					//console.info(data);
+					//var datas = eval('(' + data + ')');
+					//console.info(datas);
+					$("#userName").autocomplete(data, {
+						formatItem: function (data, i, max) {
+							console.info("formatItem---" + data);
+							return "<table width='400px'><tr><td align='left'>" + data[0] + "</td></tr></table>";
 						},
-						formatMatch: function(row, i, max){
-							return row;
-						}
+						formatMatch: function(data, i, max){
+							return data[0];
+						},
+						formatResult: function(data) {     
+			            	return data[0];     
+			            } 
 					});
 				}
 			}
 		});
-	});
+	}); */
 	
+	$("#userName").autocomplete({
+		minLength: 0,
+	    source: function(request, response) {
+	    	var userName = $("#userName").val();
+			var user = {"userName" : userName};
+			$.ajax({
+				type : "POST",
+				contentType : "application/json",
+				url : "/user/searchUser",
+				data : JSON.stringify(user),
+				dataType : "json",
+				success : function(data) {
+					/* var result = "";
+					$.each(data,function(index,item){
+						result = "<table width='400px'><tr><td align='left'>" + item + "</td></tr></table>";
+					}); */
+					response(data);
+				}
+			});
+	    },
+	    /* open: function(event, ui) {
+	        console.info("ui=-->" + ui.item);
+	    },
+	    close: function(event, ui) {
+	    	console.info("ui=-->" + ui.item);
+	    }, */
+		select: function(event, ui) {
+			//选中以后执行
+			console.info( ui.item ?
+                "Selected: " + ui.item.label :
+                "Nothing selected, input was " + this.value);
+        }
+	});
 	//添加
 	$("input[name='addButton']").bind("click", function() {
 		window.location.href = '/user/prepareForUserAdd';

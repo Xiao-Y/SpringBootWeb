@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.billow.mapper.UserMapper">
 
+	<!-- 返回的结果集 -->
 	<resultMap type="com.billow.model.User" id="result_base">
 		<id column="userId" property="userId" />
 		<result column="userName" property="userName" />
@@ -9,29 +10,37 @@
 		<result column="phoneNumber" property="phoneNumber" />
 	</resultMap>
 
+	<!-- 返回的结果集 -->
 	<resultMap type="com.billow.model.User" id="result" extends="result_base">
 		<collection property="articles" javaType="ArrayList"
 			column="userId" ofType="com.billow.model.Article"
 			select="com.billow.mapper.ArticleMapper.findArticleByUserId" />
 	</resultMap>
 
+	<!-- 公用查询条件 -->
+	<sql id="selectCondition">
+		<where>
+			<if test="null != userName and '' != userName">
+				u.userName like CONCAT('%','${userName}','%')
+			</if>
+			<if test="null != phoneNumber and '' != phoneNumber">
+				and u.phoneNumber like CONCAT('%','${phoneNumber}','%')
+			</if>
+			<if test="null != age">
+				and u.age = #{age}
+			</if>
+		</where>
+	</sql>
+
 	<!-- 关联查询：关联字段user中的别名userid要与article中的userid相同 -->
 	<select id="findUserList" resultMap="result" parameterType="com.billow.model.User">
 		select
 		u.userId,u.userName,u.age,u.phoneNumber from t_user u
-		<where>
-			<if test="userName != null">
-				u.userName like CONCAT('%','${userName}','%')
-			</if>
-		</where>
+		<include refid="selectCondition" />
 	</select>
 	<select id="findUserCount" resultType="int" parameterType="com.billow.model.User">
 		select count(*) from t_user u
-		<where>
-			<if test="userName != null">
-				u.userName like CONCAT('%','${userName}','%')
-			</if>
-		</where>
+		<include refid="selectCondition" />
 	</select>
 
 	<select id="findUserById" resultMap="result_base">
