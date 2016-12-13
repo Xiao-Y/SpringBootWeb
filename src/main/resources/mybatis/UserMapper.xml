@@ -77,4 +77,10 @@
 			#{userId};
 		</foreach>
 	</delete>
+	<insert id="batchInsertUser" parameterType="java.util.List">
+		insert into t_user(username,age,phoneNumber) values
+		<foreach collection="list" item="user" separator=",">
+			(#{user.userName}, #{user.age}, #{user.phoneNumber})
+		</foreach>
+	</insert>
 </mapper>

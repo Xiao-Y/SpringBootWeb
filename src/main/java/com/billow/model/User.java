@@ -26,6 +26,17 @@ public class User extends BaseModel {
 	@NotNull(message = "年龄不能为空")
 	private Integer age;
 
+	public User() {
+		super();
+	}
+
+	public User(String userName, Integer age, String phoneNumber) {
+		super();
+		this.userName = userName;
+		this.age = age;
+		this.phoneNumber = phoneNumber;
+	}
+
 	@PhoneNumber
 	private String phoneNumber;
 
@@ -73,7 +84,7 @@ public class User extends BaseModel {
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", age=" + age + ", phoneNumber=" + phoneNumber
-				+ ", articles=" + articles + "]" + super.toString();
+		return "User [userId=" + userId + ", userName=" + userName + ", age=" + age + ", phoneNumber=" + phoneNumber + ", articles=" + articles + "]"
+				+ super.toString();
 	}
 }

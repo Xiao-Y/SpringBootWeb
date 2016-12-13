@@ -20,6 +20,8 @@ public interface UserMapper {
 
 	public int findUserCount(User user);
 
+	public void batchInsertUser(List<User> users);
+
 	/**
 	 * 查询某个人发表的所有文章
 	 * 
