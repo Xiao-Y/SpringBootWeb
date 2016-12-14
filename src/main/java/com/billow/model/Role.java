@@ -1,23 +1,40 @@
 package com.billow.model;
 
+import java.util.List;
+
 public class Role {
-    private Integer id;
+	private Integer id;
 
-    private String rolename;
+	private String rolename;
 
-    public Integer getId() {
-        return id;
-    }
+	private List<User> users;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public String getRolename() {
-        return rolename;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setRolename(String rolename) {
-        this.rolename = rolename == null ? null : rolename.trim();
-    }
+	public String getRolename() {
+		return rolename;
+	}
+
+	public void setRolename(String rolename) {
+		this.rolename = rolename == null ? null : rolename.trim();
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+	@Override
+	public String toString() {
+		return "Role [id=" + id + ", rolename=" + rolename + ", users=" + users + "]";
+	}
 }

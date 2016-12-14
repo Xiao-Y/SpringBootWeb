@@ -28,6 +28,12 @@ public class User extends BaseModel {
 
 	private String password;
 
+	@PhoneNumber
+	private String phoneNumber;
+
+	private List<Article> articles;
+	private List<Role> roles;
+
 	public User() {
 		super();
 	}
@@ -38,11 +44,6 @@ public class User extends BaseModel {
 		this.age = age;
 		this.phoneNumber = phoneNumber;
 	}
-
-	@PhoneNumber
-	private String phoneNumber;
-
-	private List<Article> articles;
 
 	public Integer getUserId() {
 		return userId;
@@ -92,10 +93,18 @@ public class User extends BaseModel {
 		this.password = password;
 	}
 
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", age=" + age + ", password=" + password + ", phoneNumber=" + phoneNumber
-				+ ", articles=" + articles + "]";
+				+ ", articles=" + articles + ", roles=" + roles + "]";
 	}
 
 }

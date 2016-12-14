@@ -4,27 +4,32 @@
 
 	<!-- 返回的结果集 -->
 	<resultMap type="com.billow.model.User" id="result_base">
-		<id column="userId" property="userId" />
-		<result column="userName" property="userName" />
+		<id column="user_Id" property="userId" />
+		<result column="user_Name" property="userName" />
 		<result column="age" property="age" />
-		<result column="phoneNumber" property="phoneNumber" />
+		<result column="phone_Number" property="phoneNumber" />
+		<result column="password" property="password" />
 	</resultMap>
 
 	<!-- 返回的结果集 -->
 	<resultMap type="com.billow.model.User" id="result" extends="result_base">
 		<collection property="articles" javaType="ArrayList"
-			column="userId" ofType="com.billow.model.Article"
+			column="user_id" ofType="com.billow.model.Article"
 			select="com.billow.mapper.ArticleMapper.findArticleByUserId" />
+
+		<collection property="roles" javaType="ArrayList"
+			ofType="com.billow.model.Role" column="user_id"
+			select="com.billow.mapper.RoleMapper.selectByPrimaryKey" />
 	</resultMap>
 
 	<!-- 公用查询条件 -->
 	<sql id="selectCondition">
 		<where>
 			<if test="null != userName and '' != userName">
-				u.userName like CONCAT('%','${userName}','%')
+				u.user_Name like CONCAT('%','${userName}','%')
 			</if>
 			<if test="null != phoneNumber and '' != phoneNumber">
-				and u.phoneNumber like CONCAT('%','${phoneNumber}','%')
+				and u.phone_Number like CONCAT('%','${phoneNumber}','%')
 			</if>
 			<if test="null != age">
 				and u.age = #{age}
@@ -35,7 +40,8 @@
 	<!-- 关联查询：关联字段user中的别名userid要与article中的userid相同 -->
 	<select id="findUserList" resultMap="result" parameterType="com.billow.model.User">
 		select
-		u.userId,u.userName,u.age,u.phoneNumber,u.password from t_user u
+		u.user_id,u.user_Name,u.age,u.phone_Number,u.password from
+		t_user u
 		<include refid="selectCondition" />
 	</select>
 	<select id="findUserCount" resultType="int" parameterType="com.billow.model.User">
@@ -46,14 +52,14 @@
 	<select id="findUserById" resultMap="result_base">
 		select r.*
 		from t_user r
-		where r.userId = #{userid};
+		where r.user_Id = #{userid};
 	</select>
 
 	<!-- useGeneratedKeys设置 为"true"表明要MyBatis获取由数据库自动生成的主 键； keyProperty="userId"指定把获取到的主键值注入到User的userId属性 -->
 	<insert id="saveUserInfo" parameterType="com.billow.model.User"
 		useGeneratedKeys="true" keyProperty="userId">
 		insert into
-		t_user(username,
+		t_user(user_name,
 		age,phoneNumber,password)
 		values(#{userName}, #{age},
 		#{phoneNumber},#{password});
@@ -61,26 +67,26 @@
 
 	<update id="updateUserInfo" parameterType="com.billow.model.User">
 		update t_user r set
-		r.userName = #{userName},r.age = #{age},r.phoneNumber =
-		#{phoneNumber},r.phoneNumber = #{password}
-		where r.userId = #{userId};
+		r.user_Name = #{userName},r.age = #{age},r.phone_Number =
+		#{phoneNumber},r.password = #{password}
+		where r.user_Id = #{userId};
 	</update>
 
 	<delete id="deleteUserByUserId" parameterType="int">
 		delete from t_user
-		where r.userId = #{userId};
+		where r.user_Id = #{userId};
 	</delete>
 
 	<delete id="deleteUserByUserIds" parameterType="int">
 		delete from t_user
-		where r.userId in
+		where r.user_Id in
 		<foreach collection="array" open="(" close=")" separator=","
 			item="userId">
 			#{userId};
 		</foreach>
 	</delete>
 	<insert id="batchInsertUser" parameterType="java.util.List">
-		insert into t_user(username,age,phoneNumber) values
+		insert into t_user(user_name,age,phone_Number) values
 		<foreach collection="list" item="user" separator=",">
 			(#{user.userName}, #{user.age}, #{user.phoneNumber},
 			#{user.password})
