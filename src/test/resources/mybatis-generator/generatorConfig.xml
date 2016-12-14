@@ -26,7 +26,7 @@
 
 		<!-- targetProject:自动生成代码的位置 -->
 		<javaModelGenerator targetPackage="com.billow.model"
-			targetProject="D:\project\workspace\SpringBootWeb\src\main\java\generator">
+			targetProject="D:\project\workspace\SpringBootWeb\src\test\java">
 			<!-- enableSubPackages:是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="true" />
 			<!-- 从数据库返回的值被清理前后的空格 -->
@@ -34,12 +34,12 @@
 		</javaModelGenerator>
 
 		<sqlMapGenerator targetPackage="com.billow.mapper"
-			targetProject="D:\project\workspace\SpringBootWeb\src\main\java\generator">
+			targetProject="D:\project\workspace\SpringBootWeb\src\test\java">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 
 		<javaClientGenerator targetPackage="com.billow.mapper"
-			targetProject="D:\project\workspace\SpringBootWeb\src\main\java\generator"
+			targetProject="D:\project\workspace\SpringBootWeb\src\test\java"
 			type="XMLMAPPER">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
