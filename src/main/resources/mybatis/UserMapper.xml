@@ -35,7 +35,7 @@
 	<!-- 关联查询：关联字段user中的别名userid要与article中的userid相同 -->
 	<select id="findUserList" resultMap="result" parameterType="com.billow.model.User">
 		select
-		u.userId,u.userName,u.age,u.phoneNumber from t_user u
+		u.userId,u.userName,u.age,u.phoneNumber,u.password from t_user u
 		<include refid="selectCondition" />
 	</select>
 	<select id="findUserCount" resultType="int" parameterType="com.billow.model.User">
@@ -54,13 +54,15 @@
 		useGeneratedKeys="true" keyProperty="userId">
 		insert into
 		t_user(username,
-		age,phoneNumber)
-		values(#{userName}, #{age}, #{phoneNumber});
+		age,phoneNumber,password)
+		values(#{userName}, #{age},
+		#{phoneNumber},#{password});
 	</insert>
 
 	<update id="updateUserInfo" parameterType="com.billow.model.User">
 		update t_user r set
-		r.userName = #{userName},r.age = #{age},r.phoneNumber = #{phoneNumber}
+		r.userName = #{userName},r.age = #{age},r.phoneNumber =
+		#{phoneNumber},r.phoneNumber = #{password}
 		where r.userId = #{userId};
 	</update>
 
@@ -80,7 +82,8 @@
 	<insert id="batchInsertUser" parameterType="java.util.List">
 		insert into t_user(username,age,phoneNumber) values
 		<foreach collection="list" item="user" separator=",">
-			(#{user.userName}, #{user.age}, #{user.phoneNumber})
+			(#{user.userName}, #{user.age}, #{user.phoneNumber},
+			#{user.password})
 		</foreach>
 	</insert>
 </mapper>

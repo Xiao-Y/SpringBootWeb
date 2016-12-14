@@ -12,16 +12,16 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.billow.shiro.ShiroRealmImpl;
+import com.billow.shiro.ShiroRealm;
 
 //@Configuration
 public class ShiroConfiguration {
 
 	private static Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
 
-	@Bean(name = "ShiroRealmImpl")
-	public ShiroRealmImpl getShiroRealm() {
-		return new ShiroRealmImpl();
+	@Bean(name = "shiroRealm")
+	public ShiroRealm getShiroRealm() {
+		return new ShiroRealm();
 	}
 
 	@Bean(name = "shiroEhcacheManager")

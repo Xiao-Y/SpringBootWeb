@@ -26,6 +26,8 @@ public class User extends BaseModel {
 	@NotNull(message = "年龄不能为空")
 	private Integer age;
 
+	private String password;
+
 	public User() {
 		super();
 	}
@@ -82,9 +84,18 @@ public class User extends BaseModel {
 		this.phoneNumber = phoneNumber;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", age=" + age + ", phoneNumber=" + phoneNumber + ", articles=" + articles + "]"
-				+ super.toString();
+		return "User [userId=" + userId + ", userName=" + userName + ", age=" + age + ", password=" + password + ", phoneNumber=" + phoneNumber
+				+ ", articles=" + articles + "]";
 	}
+
 }

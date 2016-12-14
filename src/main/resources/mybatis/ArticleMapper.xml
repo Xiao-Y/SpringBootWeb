@@ -47,4 +47,82 @@
 			#{articleId}
 		</foreach>
 	</delete>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		t_article
+		where article_id = #{articleId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.billow.model.Article">
+		insert into t_article
+		(article_id, user_id, title,
+		content)
+		values
+		(#{articleId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+		#{title,jdbcType=VARCHAR},
+		#{content,jdbcType=LONGVARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.billow.model.Article">
+		insert into t_article
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="articleId != null">
+				article_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="articleId != null">
+				#{articleId,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.billow.model.Article">
+		update t_article
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where article_id = #{articleId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.billow.model.Article">
+		update
+		t_article
+		set user_id = #{userId,jdbcType=INTEGER},
+		title =
+		#{title,jdbcType=VARCHAR},
+		content = #{content,jdbcType=LONGVARCHAR}
+		where article_id = #{articleId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.billow.model.Article">
+		update t_article
+		set user_id = #{userId,jdbcType=INTEGER},
+		title =
+		#{title,jdbcType=VARCHAR}
+		where article_id =
+		#{articleId,jdbcType=INTEGER}
+	</update>
 </mapper>

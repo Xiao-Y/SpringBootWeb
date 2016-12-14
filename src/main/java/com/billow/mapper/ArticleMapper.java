@@ -11,4 +11,16 @@ public interface ArticleMapper {
 	public List<Article> findArticleByUserId();
 
 	public void deleteUserByArticleIds(Integer[] articleIds);
+
+	int deleteByPrimaryKey(Integer articleId);
+
+	int insert(Article record);
+
+	int insertSelective(Article record);
+
+	int updateByPrimaryKeySelective(Article record);
+
+	int updateByPrimaryKeyWithBLOBs(Article record);
+
+	int updateByPrimaryKey(Article record);
 }
