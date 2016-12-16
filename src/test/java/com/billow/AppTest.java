@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.billow.mapper.RoleMapper;
 import com.billow.mapper.UserMapper;
+import com.billow.model.Role;
 import com.billow.model.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -19,12 +21,21 @@ public class AppTest {
 	@Autowired
 	private UserMapper userMapper;
 
+	@Autowired
+	private RoleMapper roleMapper;
+
 	@Test
 	public void getUserList() {
 		List<User> userList = userMapper.findUserList(null);
 		for (User user : userList) {
 			System.out.println(user);
 		}
+	}
+
+	@Test
+	public void findUserById() {
+		User user = userMapper.findUserById(1);
+		System.out.println(user);
 	}
 
 	@Test
@@ -37,5 +48,28 @@ public class AppTest {
 		users.add(new User("ggg", 27, "15507213345"));
 		users.add(new User("ccc", 28, "15507547656"));
 		userMapper.batchInsertUser(users);
+	}
+
+	@Test
+	public void batchInsertRole() {
+		List<Role> list = new ArrayList<>();
+		list.add(new Role("sa"));
+		list.add(new Role("admin"));
+		list.add(new Role("general"));
+		roleMapper.batchInsertRole(list);
+	}
+
+	@Test
+	public void findRoleList() {
+		List<Role> roleList = roleMapper.findRoleList(null);
+		for (Role role : roleList) {
+			System.out.println(role);
+		}
+	}
+
+	@Test
+	public void findRoleByRoleId() {
+		Role role = roleMapper.findRoleByRoleId(3);
+		System.out.println(role);
 	}
 }

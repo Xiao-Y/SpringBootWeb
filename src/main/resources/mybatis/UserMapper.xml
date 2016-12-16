@@ -13,13 +13,15 @@
 
 	<!-- 返回的结果集 -->
 	<resultMap type="com.billow.model.User" id="result" extends="result_base">
+		<!-- 级联查询出文章(一对多，一对一使用select) -->
 		<collection property="articles" javaType="ArrayList"
 			column="user_id" ofType="com.billow.model.Article"
 			select="com.billow.mapper.ArticleMapper.findArticleByUserId" />
-
-		<collection property="roles" javaType="ArrayList"
-			ofType="com.billow.model.Role" column="user_id"
-			select="com.billow.mapper.RoleMapper.selectByPrimaryKey" />
+		<!-- 级联查询出角色 -->
+		<collection property="roles" ofType="com.billow.model.Role">
+			<id column="roleId" property="id" jdbcType="INTEGER" />
+			<result column="rolename" property="rolename" jdbcType="VARCHAR" />
+		</collection>
 	</resultMap>
 
 	<!-- 公用查询条件 -->
@@ -44,15 +46,25 @@
 		t_user u
 		<include refid="selectCondition" />
 	</select>
+
 	<select id="findUserCount" resultType="int" parameterType="com.billow.model.User">
 		select count(*) from t_user u
 		<include refid="selectCondition" />
 	</select>
 
-	<select id="findUserById" resultMap="result_base">
-		select r.*
+	<select id="findUserById" resultMap="result">
+		select
+		r.*,ur.user_id as
+		u_id,ur.role_id,tr.id as roleId,tr.rolename
 		from t_user r
-		where r.user_Id = #{userid};
+		left
+		join
+		t_user_role ur on r.user_id =
+		ur.user_id left join t_role tr on
+		ur.role_id
+		= tr.id
+		where r.user_Id =
+		#{userid};
 	</select>
 
 	<!-- useGeneratedKeys设置 为"true"表明要MyBatis获取由数据库自动生成的主 键； keyProperty="userId"指定把获取到的主键值注入到User的userId属性 -->

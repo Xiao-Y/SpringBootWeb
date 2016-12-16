@@ -1,13 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.billow.mapper.RoleMapper">
+
 	<resultMap id="BaseResultMap" type="com.billow.model.Role">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="rolename" property="rolename" jdbcType="VARCHAR" />
 	</resultMap>
+
+	<!-- 级联查询出用户信息 -->
+	<resultMap type="com.billow.model.Role" id="ResultMap"
+		extends="BaseResultMap">
+		<collection property="users" ofType="com.billow.model.User">
+			<id property="userId" column="userId" />
+			<id property="userName" column="user_name" />
+			<id property="age" column="age" />
+			<id property="phoneNumber" column="phone_Number" />
+			<id property="password" column="password" />
+		</collection>
+	</resultMap>
+
 	<sql id="Base_Column_List">
 		id, rolename
 	</sql>
+
+	<sql id="selectCondition">
+		<where>
+			<if test="null != rolename and '' != rolename">
+				rolename like CONCAT('%','${rolename}','%')
+			</if>
+		</where>
+	</sql>
+
+	<select id="findRoleList" parameterType="com.billow.model.Role"
+		resultMap="BaseResultMap">
+		select * from t_role
+		<include refid="selectCondition" />
+	</select>
+
+	<select id="findRoleCount" parameterType="com.billow.model.Role"
+		resultMap="BaseResultMap">
+		select count(*) from t_role
+		<include refid="selectCondition" />
+	</select>
+
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
 		select
@@ -15,14 +50,33 @@
 		from t_role
 		where id = #{id,jdbcType=INTEGER}
 	</select>
+
+	<!-- 级联查询出用户信息 -->
+	<select id="findRoleByRoleId" resultMap="ResultMap"
+		parameterType="java.lang.Integer">
+		select
+		r.id, r.rolename,ur.user_id,ur.role_id,u.user_id
+		as userId,u.user_name,u.phone_number
+		from t_role
+		r left join
+		t_user_role ur on r.id = ur.role_id left join t_user u on
+		ur.user_id =
+		u.user_id
+		where id =
+		#{id,jdbcType=INTEGER}
+	</select>
+
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from t_role
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
+
 	<insert id="insert" parameterType="com.billow.model.Role">
-		insert into t_role (id, rolename)
+		insert into t_role (id,
+		rolename)
 		values (#{id,jdbcType=INTEGER}, #{rolename,jdbcType=VARCHAR})
 	</insert>
+
 	<insert id="insertSelective" parameterType="com.billow.model.Role">
 		insert into t_role
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -42,6 +96,7 @@
 			</if>
 		</trim>
 	</insert>
+
 	<update id="updateByPrimaryKeySelective" parameterType="com.billow.model.Role">
 		update t_role
 		<set>
@@ -51,9 +106,19 @@
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+
 	<update id="updateByPrimaryKey" parameterType="com.billow.model.Role">
 		update t_role
-		set rolename = #{rolename,jdbcType=VARCHAR}
-		where id = #{id,jdbcType=INTEGER}
+		set
+		rolename = #{rolename,jdbcType=VARCHAR}
+		where id =
+		#{id,jdbcType=INTEGER}
 	</update>
+
+	<insert id="batchInsertRole" parameterType="java.util.List">
+		insert into t_role(rolename) values
+		<foreach collection="list" item="role" separator=",">
+			(#{role.rolename})
+		</foreach>
+	</insert>
 </mapper>

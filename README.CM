@@ -98,5 +98,162 @@ spring-boot-starter-tomcat
 
 
 
+一对多：
+user-article
+1、Model
+User:
+private List<Article> articles;
+
+2、Mapper
+UserMapper:
+public List<User> findUserList(User user);
+
+ArticleMapper:
+public List<Article> findArticleByUserId();
+
+3、UserMapper.xml
+
+	<!-- 公用查询条件 -->
+	<sql id="selectCondition">
+		<where>
+			<if test="null != userName and '' != userName">
+				u.user_Name like CONCAT('%','${userName}','%')
+			</if>
+			<if test="null != phoneNumber and '' != phoneNumber">
+				and u.phone_Number like CONCAT('%','${phoneNumber}','%')
+			</if>
+			<if test="null != age">
+				and u.age = #{age}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 返回的结果集 -->
+	<resultMap type="com.billow.model.User" id="result_base">
+		<id column="user_Id" property="userId" />
+		<result column="user_Name" property="userName" />
+		<result column="age" property="age" />
+		<result column="phone_Number" property="phoneNumber" />
+		<result column="password" property="password" />
+	</resultMap>
+	
+		<!-- 返回的结果集 -->
+	<resultMap id="result" extends="result_base" type="com.billow.model.User">
+		<!-- 级联查询出文章(一对多，一对一使用select) -->
+		<collection property="articles" javaType="ArrayList"
+			column="user_id" ofType="com.billow.model.Article"
+			select="com.billow.mapper.ArticleMapper.findArticleByUserId" />
+	</resultMap>
+
+	<!-- 关联查询：关联字段user中的别名userid要与article中的userid相同 -->
+	<select id="findUserList" resultMap="result" parameterType="com.billow.model.User">
+		select
+		u.user_id,u.user_Name,u.age,u.phone_Number,u.password from
+		t_user u
+		<include refid="selectCondition" />
+	</select>
 
 
+多对多：
+user-role
+1、Model
+User:
+private List<Role> roles;
+
+2、Mapper
+public User findUserById(int userId);
+
+3、UserMapper.xml
+<!-- 公用查询条件 -->
+	<sql id="selectCondition">
+		<where>
+			<if test="null != userName and '' != userName">
+				u.user_Name like CONCAT('%','${userName}','%')
+			</if>
+			<if test="null != phoneNumber and '' != phoneNumber">
+				and u.phone_Number like CONCAT('%','${phoneNumber}','%')
+			</if>
+			<if test="null != age">
+				and u.age = #{age}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 返回的结果集 -->
+	<resultMap type="com.billow.model.User" id="result_base">
+		<id column="user_Id" property="userId" />
+		<result column="user_Name" property="userName" />
+		<result column="age" property="age" />
+		<result column="phone_Number" property="phoneNumber" />
+		<result column="password" property="password" />
+	</resultMap>
+	
+		<!-- 返回的结果集 -->
+	<resultMap id="result" extends="result_base" type="com.billow.model.User">
+		<!-- 级联查询出文章(一对多，一对一使用select) -->
+		<collection property="roles" ofType="com.billow.model.Role">
+			<id column="roleId" property="id" jdbcType="INTEGER" />
+			<result column="rolename" property="rolename" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+
+	<select id="findUserById" resultMap="result">
+		select
+		r.*,ur.user_id as
+		u_id,ur.role_id,tr.id as roleId,tr.rolename
+		from t_user r
+		left
+		join
+		t_user_role ur on r.user_id =
+		ur.user_id left join t_role tr on
+		ur.role_id
+		= tr.id
+		where r.user_Id =
+		#{userid};
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+
+	

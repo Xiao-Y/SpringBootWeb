@@ -21,4 +21,6 @@ public interface UserMapper {
 	public int findUserCount(User user);
 
 	public void batchInsertUser(List<User> users);
+	
+	public void findRoleByUserId(Integer userId);
 }

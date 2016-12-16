@@ -9,6 +9,15 @@ public class Role {
 
 	private List<User> users;
 
+	public Role() {
+		super();
+	}
+
+	public Role(String rolename) {
+		super();
+		this.rolename = rolename;
+	}
+
 	public Integer getId() {
 		return id;
 	}
