@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import utils.StringUtils;
 import utils.ToolsUtils;
@@ -43,6 +44,7 @@ public class UserServiceImpl implements UserService {
 		return userMapper.findUserById(id);
 	}
 
+	@Transactional
 	@Override
 	public void deleteUserByUserId(Integer userId) {
 		User user = userMapper.findUserById(userId);
